@@ -1,0 +1,25 @@
+services:
+  # 1. SERVİS: Python FastAPI Uygulamamız
+  web_app:
+    build: ./app
+    container_name: devops_fastapi_app
+    restart: always
+    networks:
+      - gateway-network
+
+  # 2. SERVİS: Nginx Reverse Proxy
+  nginx:
+    build: ./nginx
+    container_name: devops_nginx_proxy
+    ports:
+      - "80:80"             # Bilgisayarının 80 portunu Konteynerin 80 portuna bağlar
+    depends_on:
+      - web_app             # Nginx başlamadan önce web_app'in hazır olmasını bekler
+    restart: always
+    networks:
+      - gateway-network
+
+# İZOLE DOCKER AĞI (En sol hizada olmalı)
+networks:
+  gateway-network:
+    driver: bridge
