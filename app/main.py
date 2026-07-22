@@ -1,9 +1,13 @@
 #Uygulamamızın kendisi. Tarayicidan girdigimizde bize "Gateway API Service aktif!" yanitini donecek.
 
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 import os
 
 app = FastAPI()
+
+# Prometheus Metrik Toplayıcıyı Başlat
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/")
 def read_root():
