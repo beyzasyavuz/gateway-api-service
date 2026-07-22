@@ -11,7 +11,7 @@ def read_root():
     server_id = os.getenv("HOSTNAME","Bilinmeyen Sunucu")
     return {
         "status": "success",
-        "message": "Gateway API Service aktif!",
+        "message": "Gateway API Service v1.0 - CI/CD Pipeline aktif!",
         "server": server_id
     }
 
