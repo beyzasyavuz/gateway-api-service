@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTech Bank - İnternet Bankacılığı</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: #111827;
+            --card-border: #1f293d;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --green-success: #10b981;
+            --red-danger: #f43f5e;
+            --gold: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background-color: #0d1322;
+            border-right: 1px solid var(--card-border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 40px;
+        }
+
+        .brand i {
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-info .tc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent-blue);
+        }
+
+        /* GRID LAYOUT */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        /* CARDS */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .wealth-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wealth-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wealth-amount {
+            font-size: 2.25rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .iban-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ACCOUNTS ROW */
+        .accounts-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .sub-account-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: transform 0.2s;
+        }
+
+        .sub-account-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .acc-type {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .acc-balance {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 8px;
+        }
+
+        /* QUICK ACTIONS */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .action-btn i {
+            font-size: 1.25rem;
+            color: var(--accent-blue);
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            border-color: var(--accent-blue);
+        }
+
+        .action-btn:hover i {
+            color: #ffffff;
+        }
+
+        /* TRANSACTIONS TABLE */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .view-all {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tx-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tx-item:hover {
+            border-color: var(--card-border);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tx-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .tx-icon.income { background-color: rgba(16, 185, 129, 0.15); color: var(--green-success); }
+        .tx-icon.expense { background-color: rgba(244, 63, 94, 0.15); color: var(--red-danger); }
+        .tx-icon.transfer { background-color: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+
+        .tx-info .title { font-weight: 600; font-size: 0.9rem; }
+        .tx-info .date { font-size: 0.75rem; color: var(--text-muted); }
+
+        .tx-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .tx-amount.positive { color: var(--green-success); }
+        .tx-amount.negative { color: var(--text-main); }
+
+        /* TOP SPENDING */
+        .spending-item {
+            margin-bottom: 16px;
+        }
+
+        .spending-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--card-border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent-blue);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div>
+            <div class="brand">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>FINTECH BANK</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="#"><i class="fa-solid fa-house"></i> Ana Sayfa</a></li>
+                <li class="nav-item"><a href="#"><i class="fa-solid fa-wallet"></i> Hesaplarım</a></li>
+                <li class="nav-item"><a href="#"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transferler (FAST)</a></li>
+                <li class="nav-item"><a href="#"><i class="fa-solid fa-chart-pie"></i> Harcama Analizi</a></li>
+                <li class="nav-item"><a href="#"><i class="fa-solid fa-credit-card"></i> Kartlarım</a></li>
+                <li class="nav-item"><a href="#"><i class="fa-solid fa-gear"></i> Ayarlar</a></li>
+            </ul>
+        </div>
+
+        <div class="user-profile">
+            <div class="avatar">YY</div>
+            <div class="user-info">
+                <div class="name">Yavuz Yılmaz</div>
+                <div class="tc">T.C. 12345678901</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="header">
+            <div>
+                <h1>Hoş Geldin, Yavuz 👋</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Finansal durumunun bugünkü özeti.</p>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <button class="icon-btn"><i class="fa-regular fa-eye"></i></button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- LEFT COLUMN -->
+            <div class="left-col">
+                <!-- MAIN WEALTH CARD -->
+                <div class="card wealth-card">
+                    <div class="wealth-title">Toplam Varlık (TL Karşılığı)</div>
+                    <div class="wealth-amount">₺ 248,500.00</div>
+                    <div class="iban-badge">
+                        <i class="fa-regular fa-copy"></i> TR12 0006 1000 0000 1111 2222 01
+                    </div>
+                </div>
+
+                <!-- ACCOUNTS ROW -->
+                <div class="accounts-row">
+                    <div class="sub-account-card">
+                        <div class="acc-type"><span>VADESİZ TL</span> <i class="fa-solid fa-turkish-lira-sign"></i></div>
+                        <div class="acc-balance">₺ 248,500.00</div>
+                    </div>
+                    <div class="sub-account-card">
+                        <div class="acc-type"><span>DÖVİZ (USD)</span> <i class="fa-solid fa-dollar-sign"></i></div>
+                        <div class="acc-balance">$ 4,200.50</div>
+                    </div>
+                    <div class="sub-account-card">
+                        <div class="acc-type"><span>ALTIN (XAU)</span> <i class="fa-solid fa-coins" style="color: var(--gold);"></i></div>
+                        <div class="acc-balance">18.50 gr</div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTIONS -->
+                <div class="actions-grid">
+                    <div class="action-btn">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Para Gönder</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Fatura Öde</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fa-solid fa-repeat"></i>
+                        <span>Döviz / Altın</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span>QR Kod İşlem</span>
+                    </div>
+                </div>
+
+                <!-- TRANSACTIONS -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-title">Son Hesap Hareketleri</span>
+                        <a href="#" class="view-all">Tümünü Gör</a>
+                    </div>
+                    <div class="transaction-list">
+                        <div class="tx-item">
+                            <div class="tx-left">
+                                <div class="tx-icon income"><i class="fa-solid fa-arrow-down-left"></i></div>
+                                <div class="tx-info">
+                                    <div class="title">Maaş Ödemesi - ONFTECH</div>
+                                    <div class="date">EFT • Bugün, 09:30</div>
+                                </div>
+                            </div>
+                            <div class="tx-amount positive">+ ₺ 85,000.00</div>
+                        </div>
+
+                        <div class="tx-item">
+                            <div class="tx-left">
+                                <div class="tx-icon expense"><i class="fa-solid fa-coffee"></i></div>
+                                <div class="tx-info">
+                                    <div class="title">Mikel Coffee</div>
+                                    <div class="date">Kart Harcaması • Bugün, 10:15</div>
+                                </div>
+                            </div>
+                            <div class="tx-amount negative">- ₺ 540.00</div>
+                        </div>
+
+                        <div class="tx-item">
+                            <div class="tx-left">
+                                <div class="tx-icon transfer"><i class="fa-solid fa-house-user"></i></div>
+                                <div class="tx-info">
+                                    <div class="title">Ayşe Kaya (Kira Ödemesi)</div>
+                                    <div class="date">FAST • Dün, 14:20</div>
+                                </div>
+                            </div>
+                            <div class="tx-amount negative">- ₺ 12,500.00</div>
+                        </div>
+
+                        <div class="tx-item">
+                            <div class="tx-left">
+                                <div class="tx-icon expense"><i class="fa-solid fa-bag-shopping"></i></div>
+                                <div class="tx-info">
+                                    <div class="title">Teknosa Macbook Aksesuar</div>
+                                    <div class="date">Kart Harcaması • 21 Tem 2026</div>
+                                </div>
+                            </div>
+                            <div class="tx-amount negative">- ₺ 15,000.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="right-col">
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="section-header">
+                        <span class="section-title">En Çok Harcananlar</span>
+                    </div>
+                    
+                    <div class="spending-item">
+                        <div class="spending-info">
+                            <span>Teknoloji & Ekipman</span>
+                            <span style="font-weight: 600;">₺ 19,500.00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="spending-item">
+                        <div class="spending-info">
+                            <span>Kira & Ev Giderleri</span>
+                            <span style="font-weight: 600;">₺ 12,500.00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50%; background-color: #8b5cf6;"></div>
+                        </div>
+                    </div>
+
+                    <div class="spending-item">
+                        <div class="spending-info">
+                            <span>Ulaşım & Seyahat</span>
+                            <span style="font-weight: 600;">₺ 9,750.00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 38%; background-color: #10b981;"></div>
+                        </div>
+                    </div>
+
+                    <div class="spending-item">
+                        <div class="spending-info">
+                            <span>Kafe & Restoran</span>
+                            <span style="font-weight: 600;">₺ 1,530.00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 15%; background-color: #f59e0b;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD SUMMARY -->
+                <div class="card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none;">
+                    <div style="font-size: 0.8rem; opacity: 0.8; font-weight: 600; text-transform: uppercase;">Aktivite Kartı</div>
+                    <div style="font-size: 1.25rem; font-weight: 700; margin-top: 12px; margin-bottom: 24px;">FinTech Black Card</div>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 1rem; letter-spacing: 2px;">•••• •••• •••• 4281</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.8rem; opacity: 0.9;">
+                        <span>Son Kullanma: 08/29</span>
+                        <span>CVC: •••</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

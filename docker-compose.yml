@@ -14,6 +14,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx # <--- BURASI EKLENDİ (Nginx logları buraya yazacak)
     depends_on:
       - web_app
     networks:
@@ -26,6 +27,27 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - gateway_net
+  
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: devops_loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - gateway_net
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: devops_promtail
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - nginx_logs:/var/log/nginx:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
     networks:
       - gateway_net
 
@@ -42,3 +64,6 @@ services:
 networks:
   gateway_net:
     driver: bridge
+
+volumes:
+  nginx_logs: # <--- En altta kalması doğru
